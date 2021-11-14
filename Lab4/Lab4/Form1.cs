@@ -17,17 +17,13 @@ namespace Lab4
 {
     public partial class Form1 : Form
     {
-        static double[] array;
-        static double[] array2 = new double[] { 2, 6, 7, 10, 1, 4, 8, 14, 3, 1, 2, 0 };
-        static double[] array3 = new double[] { 2, 6, 7, 10, 1, 4, 8, 14, 3, 1, 2, 0 };
-        static double[] array4 = new double[] { 2, 6, 7, 10, 1, 4, 8, 14, 3, 1, 2, 0 };
-        static double[] array5 = new double[] { 2, 6, 7, 10, 1, 4, 8, 14, 3, 1, 2, 0 };
+        private double[] array;
+        private double[] array2;
+        private double[] array3;
+        private double[] array4;
+        private double[] array5;
 
-        //static double maxNumArray = array.Max();
-        static double maxNumArray2 = array2.Max();
-        static double maxNumArray3 = array3.Max();
-        static double maxNumArray4 = array4.Max();
-        static double maxNumArray5 = array5.Max();
+
 
         private BufferedGraphics buffered;
         private BufferedGraphics buffered2;
@@ -36,6 +32,7 @@ namespace Lab4
         private BufferedGraphics buffered5;
 
         public static List<double> Excel = new List<double>(); // Список для точек
+        public static List<double> Manual = new List<double>(); // Список для точек
         public static List<Point> Ru = new List<Point>(); // Список для точек
 
         public class Point // Сохраниние чисел
@@ -82,8 +79,35 @@ namespace Lab4
                 Excel.Add(Convert.ToDouble(xColumn[i]));
                 dataGridView1.Rows.Add(Excel[i]);
             }
-            array = Excel.ToArray();
 
+            array = null;
+            array2 = null;
+            array3 = null;
+            array4 = null;
+            array5 = null;
+
+            array = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+            array2 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array2[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array3 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array3[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array4 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array4[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array5 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array5[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
 
             ObjWorkBook.Close(); // Закрытие книги
             ObjExcel.Quit(); // Выход из Excel
@@ -119,10 +143,39 @@ namespace Lab4
 
             for (int i = 0; i < xColumn.Length; ++i)
             {
-                //Point point = new Point(double.Parse(xColumn[i]));
-                //Excel.Add(point);
-                //dataGridView1.Rows.Add(Excel[i].x);
+                Excel.Add(Convert.ToDouble(xColumn[i]));
+                dataGridView1.Rows.Add(Excel[i]);
             }
+
+            array = null;
+            array2 = null;
+            array3 = null;
+            array4 = null;
+            array5 = null;
+
+            array = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+            array2 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array2[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array3 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array3[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array4 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array4[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+            array5 = new double[dataGridView1.RowCount];
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                array5[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
             ObjWorkBook.Close(); // Закрытие книги
             ObjExcel.Quit(); // Выход из Excel
         }
@@ -130,7 +183,6 @@ namespace Lab4
 
         private void стартToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             pictureBox1.Image = null;
             pictureBox2.Image = null;
             pictureBox3.Image = null;
@@ -140,7 +192,7 @@ namespace Lab4
             pause = true;
             if (checkBox1.Checked == true)
             {
-
+                var sum = array.Sum();
                 Thread bubble = new Thread(new ParameterizedThreadStart(BubbleSort));
                 threads.Add(bubble);
                 bubble.Start(array);
@@ -152,6 +204,7 @@ namespace Lab4
 
             if (checkBox2.Checked == true)
             {
+                var sum = array2.Sum();
                 Thread bubble = new Thread(new ParameterizedThreadStart(InsertionSort));
                 threads.Add(bubble);
                 bubble.Start(array2);
@@ -159,6 +212,7 @@ namespace Lab4
 
             if (checkBox3.Checked == true)
             {
+                var sum = array3.Sum();
                 Thread bubble = new Thread(new ParameterizedThreadStart(ShakerSort));
                 threads.Add(bubble);
                 bubble.Start(array3);
@@ -166,11 +220,13 @@ namespace Lab4
 
             if (checkBox4.Checked == true)
             {
+                var sum = array4.Sum();
 
             }
 
             if (checkBox5.Checked == true)
             {
+                var sum = array5.Sum();
                 Thread bubble = new Thread(new ParameterizedThreadStart(BogoSort));
                 threads.Add(bubble);
                 bubble.Start(array5);
@@ -202,8 +258,8 @@ namespace Lab4
                 {
 
                 }
-
             }
+
         }
 
         // Сорировка методом пузырька 1
@@ -396,9 +452,13 @@ namespace Lab4
         private void drawSort(double[] array)
         {
             bool flag = true;
-            Pen pen = new Pen(Color.DarkOrange);
 
-            for (int i = 0; i <= 9; i++)
+            var sum = array.Sum();
+            double maxNumArray = array.Max();
+
+            Pen pen = new Pen(Color.DarkOrange);
+            
+            for (int i = 0; i <= maxNumArray; i++)
             {
                 for (int j = 0; j < array.Length; j++)
                 {
@@ -433,9 +493,13 @@ namespace Lab4
         private void drawSort2(double[] array2)
         {
             bool flag = true;
+
+            var sum = array2.Sum();
+            double maxNumArray = array2.Max();
+
             Pen pen = new Pen(Color.DarkOrange);
 
-            for (int i = 0; i <= maxNumArray2; i++)
+            for (int i = 0; i <= maxNumArray; i++)
             {
                 for (int j = 0; j < array2.Length; j++)
                 {
@@ -469,9 +533,13 @@ namespace Lab4
         private void drawSort3(double[] array3)
         {
             bool flag = true;
+
+            var sum = array3.Sum();
+            double maxNumArray = array3.Max();
+
             Pen pen = new Pen(Color.DarkOrange);
 
-            for (int i = 0; i <= maxNumArray3; i++)
+            for (int i = 0; i <= maxNumArray; i++)
             {
                 for (int j = 0; j < array3.Length; j++)
                 {
@@ -506,9 +574,13 @@ namespace Lab4
         private void drawSort4(double[] array4)
         {
             bool flag = true;
+
+            var sum = array4.Sum();
+            double maxNumArray = array4.Max();
+
             Pen pen = new Pen(Color.DarkOrange);
 
-            for (int i = 0; i <= maxNumArray4; i++)
+            for (int i = 0; i <= maxNumArray; i++)
             {
                 for (int j = 0; j < array4.Length; j++)
                 {
@@ -542,9 +614,13 @@ namespace Lab4
         private void drawSort5(double[] array5)
         {
             bool flag = true;
+
+            var sum = array5.Sum();
+            double maxNumArray = array5.Max();
+
             Pen pen = new Pen(Color.DarkOrange);
 
-            for (int i = 0; i <= maxNumArray5; i++)
+            for (int i = 0; i <= maxNumArray; i++)
             {
                 for (int j = 0; j < array5.Length; j++)
                 {
@@ -585,10 +661,32 @@ namespace Lab4
                 }
                 else
                 {
-                    Point xy = new Point(Convert.ToDouble(textBox1.Text));
-                    Ru.Add(xy);
-                    dataGridView1.Rows.Add(xy.x);
+                    dataGridView1.Rows.Add(textBox1.Text);
                     textBox1.Text = "";
+
+                    array = new double[dataGridView1.RowCount];
+                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
+                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                    array2 = new double[dataGridView1.RowCount];
+                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
+                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                    array3 = new double[dataGridView1.RowCount];
+                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
+                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                    array4 = new double[dataGridView1.RowCount];
+                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
+                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                    array5 = new double[dataGridView1.RowCount];
+                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
+                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
                 }
             }
             catch
