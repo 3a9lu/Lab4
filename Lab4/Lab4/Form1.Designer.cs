@@ -62,6 +62,8 @@ namespace Lab4
             this.Добавить = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.очисткаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -175,37 +177,39 @@ namespace Lab4
             this.стартToolStripMenuItem,
             this.остановитьToolStripMenuItem,
             this.считатьСExcelToolStripMenuItem,
-            this.считатьСGoogleSheetsToolStripMenuItem});
+            this.считатьСGoogleSheetsToolStripMenuItem,
+            this.выходToolStripMenuItem,
+            this.очисткаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1375, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1375, 28);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // стартToolStripMenuItem
             // 
             this.стартToolStripMenuItem.Name = "стартToolStripMenuItem";
-            this.стартToolStripMenuItem.Size = new System.Drawing.Size(72, 26);
+            this.стартToolStripMenuItem.Size = new System.Drawing.Size(72, 24);
             this.стартToolStripMenuItem.Text = "Начать";
             this.стартToolStripMenuItem.Click += new System.EventHandler(this.стартToolStripMenuItem_Click);
             // 
             // остановитьToolStripMenuItem
             // 
             this.остановитьToolStripMenuItem.Name = "остановитьToolStripMenuItem";
-            this.остановитьToolStripMenuItem.Size = new System.Drawing.Size(104, 26);
+            this.остановитьToolStripMenuItem.Size = new System.Drawing.Size(104, 24);
             this.остановитьToolStripMenuItem.Text = "Остановить";
             // 
             // считатьСExcelToolStripMenuItem
             // 
             this.считатьСExcelToolStripMenuItem.Name = "считатьСExcelToolStripMenuItem";
-            this.считатьСExcelToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
+            this.считатьСExcelToolStripMenuItem.Size = new System.Drawing.Size(126, 24);
             this.считатьСExcelToolStripMenuItem.Text = "Считать с Excel";
             this.считатьСExcelToolStripMenuItem.Click += new System.EventHandler(this.считатьСExcelToolStripMenuItem_Click);
             // 
             // считатьСGoogleSheetsToolStripMenuItem
             // 
             this.считатьСGoogleSheetsToolStripMenuItem.Name = "считатьСGoogleSheetsToolStripMenuItem";
-            this.считатьСGoogleSheetsToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.считатьСGoogleSheetsToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
             this.считатьСGoogleSheetsToolStripMenuItem.Text = "Считать с Google Sheets";
             this.считатьСGoogleSheetsToolStripMenuItem.Click += new System.EventHandler(this.считатьСGoogleSheetsToolStripMenuItem_Click);
             // 
@@ -391,6 +395,20 @@ namespace Lab4
             this.label9.TabIndex = 26;
             this.label9.Text = "Время";
             // 
+            // выходToolStripMenuItem
+            // 
+            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.выходToolStripMenuItem.Text = "Выход";
+            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // очисткаToolStripMenuItem
+            // 
+            this.очисткаToolStripMenuItem.Name = "очисткаToolStripMenuItem";
+            this.очисткаToolStripMenuItem.Size = new System.Drawing.Size(79, 24);
+            this.очисткаToolStripMenuItem.Text = "Очистка";
+            this.очисткаToolStripMenuItem.Click += new System.EventHandler(this.очисткаToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -475,6 +493,8 @@ namespace Lab4
         private System.Windows.Forms.Button Добавить;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem очисткаToolStripMenuItem;
     }
 }
 

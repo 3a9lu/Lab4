@@ -1,13 +1,11 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,8 +21,6 @@ namespace Lab4
         private double[] array4;
         private double[] array5;
 
-
-
         private BufferedGraphics buffered;
         private BufferedGraphics buffered2;
         private BufferedGraphics buffered3;
@@ -33,20 +29,8 @@ namespace Lab4
 
         public static List<double> Excel = new List<double>(); // Список для точек
         public static List<double> Manual = new List<double>(); // Список для точек
-        public static List<Point> Ru = new List<Point>(); // Список для точек
 
-        public class Point // Сохраниние чисел
-        {
-            public double x;
-            public Point(double X)
-            {
-                this.x = X;
-            }
-        }
-
-        public string[,] list;
-
-        List<Thread> threads = new List<Thread>();
+        readonly List<Thread> threads = new List<Thread>();
 
         public bool pause;
 
@@ -183,6 +167,12 @@ namespace Lab4
 
         private void стартToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            label5.Text = "";
+            label6.Text = "";
+            label7.Text = "";
+            label8.Text = "";
+            label9.Text = "";
+
             pictureBox1.Image = null;
             pictureBox2.Image = null;
             pictureBox3.Image = null;
@@ -193,6 +183,7 @@ namespace Lab4
             if (checkBox1.Checked == true)
             {
                 var sum = array.Sum();
+
                 Thread bubble = new Thread(new ParameterizedThreadStart(BubbleSort));
                 threads.Add(bubble);
                 bubble.Start(array);
@@ -205,31 +196,42 @@ namespace Lab4
             if (checkBox2.Checked == true)
             {
                 var sum = array2.Sum();
-                Thread bubble = new Thread(new ParameterizedThreadStart(InsertionSort));
-                threads.Add(bubble);
-                bubble.Start(array2);
+
+                Thread insertion = new Thread(new ParameterizedThreadStart(InsertionSort));
+                threads.Add(insertion);
+                insertion.Start(array2);
             }
 
             if (checkBox3.Checked == true)
             {
                 var sum = array3.Sum();
-                Thread bubble = new Thread(new ParameterizedThreadStart(ShakerSort));
-                threads.Add(bubble);
-                bubble.Start(array3);
+
+                Thread shaker = new Thread(new ParameterizedThreadStart(ShakerSort));
+                threads.Add(shaker);
+                shaker.Start(array3);
             }
 
             if (checkBox4.Checked == true)
             {
+                double[] arr = new double[array4.Count()];
+                for (int i = 0; i < array4.Count(); ++i)
+                {
+                    arr[i] = array4[i];
+                }
                 var sum = array4.Sum();
 
+                Thread qick = new Thread(new ParameterizedThreadStart(QuickSort));
+                threads.Add(qick);
+                qick.Start(arr);
             }
 
             if (checkBox5.Checked == true)
             {
                 var sum = array5.Sum();
-                Thread bubble = new Thread(new ParameterizedThreadStart(BogoSort));
-                threads.Add(bubble);
-                bubble.Start(array5);
+
+                Thread bogo = new Thread(new ParameterizedThreadStart(BogoSort));
+                threads.Add(bogo);
+                bogo.Start(array5);
             }
 
             if (checkBox6.Checked == true) // По убыванию сортировка
@@ -264,7 +266,7 @@ namespace Lab4
 
         // Сорировка методом пузырька 1
         #region
-        async private void BubbleSort(object arr1)
+        async private void BubbleSort(object arr)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -299,7 +301,7 @@ namespace Lab4
 
         // Сортировка вставками 2
         #region
-        async private void InsertionSort(object arr1)
+        async private void InsertionSort(object arr2)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -345,7 +347,7 @@ namespace Lab4
             e2 = temp;
         }
 
-        async private void ShakerSort(object arr1)
+        async private void ShakerSort(object arr3)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -398,6 +400,62 @@ namespace Lab4
         // Быстрая сортировка 4
         #region
 
+        static void Swap(ref double x, ref double y) // метод, меняющий 2 элемента местами
+        {                                       // ref служит для передачи самой переменной, а не копии
+            var t = x;
+            x = y;
+            y = t;
+        }
+        static int Partition(double[] array, int minIndex, int maxIndex) // метод, возвращающий индекс опорного элемента
+        {
+            var pivot = minIndex - 1;
+            for (int i = minIndex; i < maxIndex; ++i)
+            {
+                if (array[i] < array[maxIndex])
+                {
+                    ++pivot;
+                    Swap(ref array[pivot], ref array[i]);
+                }
+            }
+
+            pivot++;
+            Swap(ref array[pivot], ref array[maxIndex]);
+            return pivot;
+        }
+        public double[] QuickSort(double[] array4, int minIndex, int maxIndex) // быстрая сортировка
+        {
+            if (minIndex >= maxIndex)
+            {
+                return array4;
+            }
+
+            var pivotIndex = Partition(array4, minIndex, maxIndex);
+
+            QuickSort(array4, minIndex, pivotIndex - 1); // левая сторона
+
+            QuickSort(array4, pivotIndex + 1, maxIndex); // правая сторона
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            drawMarking4();
+            drawSort4(array4);
+            buffered4.Render();
+            Thread.Sleep(1000);
+
+            Thread.Sleep(1000);
+
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+            System.Action action4 = () => label8.Text = Convert.ToString(elapsedTime);
+            Invoke(action4);
+            return array4;
+        }
+        public void QuickSort(object arr4)
+        {
+            double[] array4 = (double[])arr4;
+
+            QuickSort(array4, 0, array.Length - 1);
+
+        }
 
         #endregion
 
@@ -449,6 +507,9 @@ namespace Lab4
         #endregion
 
 
+
+        // Все отрисовки
+        #region
         private void drawSort(double[] array)
         {
             bool flag = true;
@@ -488,7 +549,6 @@ namespace Lab4
             drawMarking();
             buffered.Render();
         }
-
 
         private void drawSort2(double[] array2)
         {
@@ -650,7 +710,10 @@ namespace Lab4
             drawMarking5();
             buffered5.Render();
         }
+        #endregion
 
+        // Кнопка добавить
+        #region
         private void Добавить_Click(object sender, EventArgs e)
         {
             try
@@ -663,35 +726,68 @@ namespace Lab4
                 {
                     dataGridView1.Rows.Add(textBox1.Text);
                     textBox1.Text = "";
-
-                    array = new double[dataGridView1.RowCount];
-                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
-                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
-
-
-                    array2 = new double[dataGridView1.RowCount];
-                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
-                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
-
-
-                    array3 = new double[dataGridView1.RowCount];
-                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
-                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
-
-
-                    array4 = new double[dataGridView1.RowCount];
-                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
-                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
-
-
-                    array5 = new double[dataGridView1.RowCount];
-                    for (int i = 0; i < dataGridView1.RowCount - 1; ++i)
-                        array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
                 }
+                array = null;
+                array2 = null;
+                array3 = null;
+                array4 = null;
+                array5 = null;
+
+                array = new double[dataGridView1.RowCount];
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                    array[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+                array2 = new double[dataGridView1.RowCount];
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                    array2[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                array3 = new double[dataGridView1.RowCount];
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                    array3[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                array4 = new double[dataGridView1.RowCount];
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                    array4[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+
+
+                array5 = new double[dataGridView1.RowCount];
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                    array5[i] = double.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
             }
             catch
             {
                 MessageBox.Show("Введите число!", "Ошибка!");
+            }
+        }
+        #endregion
+
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void очисткаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.Rows.Count > 0)
+            {
+                label5.Text = "";
+                label6.Text = "";
+                label7.Text = "";
+                label8.Text = "";
+                label9.Text = "";
+
+                pictureBox1.Image = null;
+                pictureBox2.Image = null;
+                pictureBox3.Image = null;
+                pictureBox4.Image = null;
+                pictureBox5.Image = null;
+                dataGridView1.Rows.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Таблица пустая!", "Ошибка");
             }
         }
     }
