@@ -234,32 +234,54 @@ namespace Lab4
                 bogo.Start(array5);
             }
 
-            if (checkBox6.Checked == true) // По убыванию сортировка
+            // Обратные
+
+            if (checkBox11.Checked == true)
             {
-                if (checkBox1.Checked == true)
+                var sum = array.Sum();
+
+                Thread bubble = new Thread(new ParameterizedThreadStart(BubbleSort1));
+                threads.Add(bubble);
+                bubble.Start(array);
+            }
+
+            if (checkBox10.Checked == true)
+            {
+                var sum = array2.Sum();
+
+                Thread insertion = new Thread(new ParameterizedThreadStart(InsertionSort1));
+                threads.Add(insertion);
+                insertion.Start(array2);
+            }
+            if (checkBox9.Checked == true)
+            {
+                var sum = array3.Sum();
+
+                Thread shaker = new Thread(new ParameterizedThreadStart(ShakerSort1));
+                threads.Add(shaker);
+                shaker.Start(array3);
+            }
+            if (checkBox8.Checked == true)
+            {
+                double[] arr = new double[array4.Count()];
+                for (int i = 0; i < array4.Count(); ++i)
                 {
-
+                    arr[i] = array4[i];
                 }
+                var sum = array4.Sum();
 
-                if (checkBox2.Checked == true)
-                {
+                Thread qick = new Thread(new ParameterizedThreadStart(QuickSort1));
+                threads.Add(qick);
+                qick.Start(arr);
+            }
 
-                }
+            if (checkBox7.Checked == true)
+            {
+                var sum = array5.Sum();
 
-                if (checkBox3.Checked == true)
-                {
-
-                }
-
-                if (checkBox4.Checked == true)
-                {
-
-                }
-
-                if (checkBox5.Checked == true)
-                {
-
-                }
+                Thread bogo = new Thread(new ParameterizedThreadStart(BogoSort1));
+                threads.Add(bogo);
+                bogo.Start(array5);
             }
 
         }
@@ -454,7 +476,6 @@ namespace Lab4
             double[] array4 = (double[])arr4;
 
             QuickSort(array4, 0, array.Length - 1);
-
         }
 
         #endregion
@@ -489,6 +510,222 @@ namespace Lab4
             while (!IsSorted(array5)) // Пока массив не упорядочен
             {
                 array5 = Random(array5); // Меняем местами дальше
+                await Task.Run(() =>
+                {
+                    drawMarking5();
+                    drawSort5(array5);
+                    buffered5.Render();
+                    Thread.Sleep(1000);
+                });
+            }
+            Thread.Sleep(1000);
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+
+            System.Action action5 = () => label9.Text = Convert.ToString(elapsedTime);
+            Invoke(action5);
+        }
+        #endregion
+
+
+
+        // Обратные, ничего интересного
+        #region
+        async private void BubbleSort1(object arr)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            double dop;
+            for (int i = 0; i < array.Length; ++i)
+            {
+                for (int j = 0; j < array.Length - 1; ++j)
+                {
+                    if (array[j] < array[j + 1])
+                    {
+                        dop = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = dop;
+                    }
+                }
+                await Task.Run(() =>
+                {
+                    drawMarking();
+                    drawSort(array);
+                    buffered.Render();
+                    Thread.Sleep(1000);
+                });
+            }
+            Thread.Sleep(1000);
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+
+            System.Action action1 = () => label5.Text = Convert.ToString(elapsedTime);
+            Invoke(action1);
+        }
+
+        async private void InsertionSort1(object arr2)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            double x;
+            int j;
+            for (int i = 1; i < array2.Length; ++i)
+            {
+                x = array2[i]; // сам 2 элемент
+                j = i;
+                while (j > 0 && array2[j - 1] < x)
+                {
+                    double dop = array2[j];
+                    array2[j] = array2[j - 1];
+                    array2[j - 1] = dop;
+                    j -= 1;
+                }
+                array2[j] = x;
+
+
+                await Task.Run(() =>
+                {
+                    drawMarking2();
+                    drawSort2(array2);
+                    buffered2.Render();
+                    Thread.Sleep(1000);
+                });
+            }
+            Thread.Sleep(1000);
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+
+            System.Action action2 = () => label6.Text = Convert.ToString(elapsedTime);
+            Invoke(action2);
+        }
+
+        async private void ShakerSort1(object arr3)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (var i = 0; i < array3.Length / 2; ++i)
+            {
+                var swapFlag = false;
+                //проход слева направо
+                for (var j = i; j < array3.Length - i - 1; ++j)
+                {
+                    if (array3[j] < array3[j + 1])
+                    {
+                        Swap1(ref array3[j], ref array3[j + 1]);
+                        swapFlag = true;
+                    }
+                }
+
+                //проход справа налево
+                for (var j = array3.Length - 2 - i; j > i; --j)
+                {
+                    if (array3[j - 1] < array3[j])
+                    {
+                        Swap1(ref array3[j - 1], ref array3[j]);
+                        swapFlag = true;
+                    }
+
+                }
+                await Task.Run(() =>
+                {
+                    drawMarking3();
+                    drawSort3(array3);
+                    buffered3.Render();
+                    Thread.Sleep(1000);
+                });
+
+                //если обменов не было выходим
+                if (!swapFlag)
+                {
+                    break;
+                }
+            }
+            Thread.Sleep(1000);
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+
+            System.Action action3 = () => label7.Text = Convert.ToString(elapsedTime);
+            Invoke(action3);
+        }
+
+        static int Partition1(double[] array, int minIndex, int maxIndex) // метод, возвращающий индекс опорного элемента
+        {
+            var pivot = minIndex + 1;
+            for (int i = minIndex; i < maxIndex; ++i)
+            {
+                if (array[i] > array[maxIndex])
+                {
+                    ++pivot;
+                    Swap(ref array[pivot], ref array[i]);
+                }
+            }
+
+            pivot++;
+            Swap(ref array[pivot], ref array[maxIndex]);
+            return pivot;
+        }
+        public double[] QuickSort1(double[] array4, int minIndex, int maxIndex) // быстрая сортировка
+        {
+            if (minIndex <= maxIndex)
+            {
+                return array4;
+            }
+
+            var pivotIndex = Partition1(array4, minIndex, maxIndex);
+
+            QuickSort1(array4, minIndex, pivotIndex + 1); // левая сторона
+
+            QuickSort1(array4, pivotIndex - 1, maxIndex); // правая сторона
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            drawMarking4();
+            drawSort4(array4);
+            buffered4.Render();
+            Thread.Sleep(1000);
+
+            Thread.Sleep(1000);
+
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+            System.Action action4 = () => label8.Text = Convert.ToString(elapsedTime);
+            Invoke(action4);
+            return array4;
+        }
+        public void QuickSort1(object arr4)
+        {
+            double[] array4 = (double[])arr4;
+
+            QuickSort(array4, 0, array.Length - 1);
+        }
+
+        static bool IsSorted1(double[] array5) // Метод для проверки упорядоченности массива
+        {
+            for (int i = 0; i < array5.Length - 1; ++i)
+            {
+                if (array5[i] < array5[i + 1])
+                    return false;
+            }
+            return true;
+        }
+        static double[] Random1(double[] array5) // Метод для перемешивания элементов массива
+        {
+            Random random = new Random();
+            for (int i = array5.Length - 1; i >= 0; --i)
+            {
+                int j = random.Next(i); // Возвращение случайного числа
+                double dop = array5[i];
+                array5[i] = array5[j];
+                array5[j] = dop;
+            }
+            return array5;
+        }
+        async void BogoSort1(object arr5) // Сама сортировка
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            while (!IsSorted1(array5)) // Пока массив не упорядочен
+            {
+                array5 = Random1(array5); // Меняем местами дальше
                 await Task.Run(() =>
                 {
                     drawMarking5();
